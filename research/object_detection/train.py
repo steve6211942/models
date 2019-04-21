@@ -51,6 +51,10 @@ from object_detection.builders import input_reader_builder
 from object_detection.builders import model_builder
 from object_detection.utils import config_util
 
+#os.environ['CUDA_VISIBLE_DEVICES'] = ""
+
+
+
 tf.logging.set_verbosity(tf.logging.INFO)
 
 flags = tf.app.flags

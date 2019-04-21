@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/giant/Project/ObjectDetection/models/research/object_detection/train/model.ckpt-0"
+all_model_checkpoint_paths: "/home/giant/Project/ObjectDetection/models/research/object_detection/train/model.ckpt-0"

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>pic</folder>
+	<filename>ok_126.jpg</filename>
+	<path>/home/giant/Desktop/pic/images/pic/ok_126.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>3456</width>
+		<height>4608</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>ok</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1735</xmin>
+			<ymin>931</ymin>
+			<xmax>2735</xmax>
+			<ymax>1958</ymax>
+		</bndbox>
+	</object>
+</annotation>
