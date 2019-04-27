@@ -21,9 +21,12 @@ from __future__ import print_function
 from absl import flags
 
 import tensorflow as tf
+import os
 
 from object_detection import model_hparams
 from object_detection import model_lib
+
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 flags.DEFINE_string(
     'model_dir', None, 'Path to output model directory '
