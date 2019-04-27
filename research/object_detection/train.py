@@ -51,8 +51,8 @@ from object_detection.builders import input_reader_builder
 from object_detection.builders import model_builder
 from object_detection.utils import config_util
 
-#os.environ['CUDA_VISIBLE_DEVICES'] = ""
-
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
 
 
 tf.logging.set_verbosity(tf.logging.INFO)
