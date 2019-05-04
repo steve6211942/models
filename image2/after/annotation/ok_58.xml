@@ -1,0 +1,26 @@
+<annotation>
+	<folder>new_image</folder>
+	<filename>ok_58.jpg</filename>
+	<path>/home/giant/Desktop/image2/after/new_image/ok_58.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>4608</width>
+		<height>3456</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>ok</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>2528</xmin>
+			<ymin>1279</ymin>
+			<xmax>3011</xmax>
+			<ymax>1848</ymax>
+		</bndbox>
+	</object>
+</annotation>
