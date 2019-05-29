@@ -7,6 +7,9 @@ import tensorflow as tf
 import zipfile
 import cv2
 import requests
+import time
+import threading
+
 
 from collections import defaultdict
 from io import StringIO
@@ -27,8 +30,11 @@ from utils import label_map_util
 from utils import visualization_utils as vis_util
 
 
-url = "http://10.42.0.244:8080/shot.jpg"
+#url = "http://192.168.137.61:8080/video"
 
+cap = cv2.VideoCapture(1)
+
+#cv2.namedWindow("test")
 
 # What model to download.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
@@ -42,7 +48,12 @@ PATH_TO_CKPT = '/home/giant/Project/ObjectDetection/models/research/object_detec
 PATH_TO_LABELS = '/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/ok_label_map.pbtxt'
 
 NUM_CLASSES = 1
+#PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 
+# List of the strings that is used to add correct label for each box.
+#PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+
+#NUM_CLASSES = 90
 opener = urllib.request.URLopener()
 opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
 tar_file = tarfile.open(MODEL_FILE)
@@ -81,9 +92,7 @@ IMAGE_SIZE = (12, 8)
 with detection_graph.as_default():
   with tf.Session(graph=detection_graph) as sess:
     while True:
-      img_resp = requests.get(url)
-      img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
-      image_np = cv2.imdecode(img_arr, -1)
+      ret, image_np = cap.read()
 
       # Definite input and output Tensors for detection_graph
       image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
@@ -94,6 +103,7 @@ with detection_graph.as_default():
       detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
       detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
       num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+      #image_np = load_image_into_numpy_array(image_np)	
       image_np_expanded = np.expand_dims(image_np, axis=0)
       # Actual detection.
       (boxes, scores, classes, num) = sess.run(
@@ -108,7 +118,8 @@ with detection_graph.as_default():
           category_index,
           use_normalized_coordinates=True,
           line_thickness=8)
-      cv2.imshow('object detection', image_np)
-      if cv2.waitKey(1) & 0xFF == ord('q'):
-        cv2.destroyAllWindows()
-        break
+      cv2.imshow('Image', image_np)
+      if cv2.waitKey(25) & 0xFF == ord('q'):
+          cap.release()
+          cv2.destroyAllWindows()
+          break

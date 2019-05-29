@@ -2,12 +2,16 @@ import requests
 import cv2
 import numpy as np
 
-url = "http://10.42.0.244:8080/shot.jpg"
+cap = cv2.VideoCapture(1)
+
+
 
 while True:
-	img_resp = requests.get(url)
-	img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
-	img = cv2.imdecode(img_arr, -1)
-	cv2.imshow("AndroidCam", img)
+	ret, image = cap.read()
+	image_np = cv2.resize(image,(1280,720),cv2.INTER_CUBIC)
+	cv2.imshow("Cam", image_np)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break;
+
+cap.release()
+cv2.destroyAllWindows()
