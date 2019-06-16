@@ -32,7 +32,7 @@ from utils import visualization_utils as vis_util
 
 #url = "http://192.168.137.61:8080/video"
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 #cv2.namedWindow("test")
 
@@ -45,9 +45,9 @@ DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 PATH_TO_CKPT = '/home/giant/Project/ObjectDetection/models/research/object_detection/train/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = '/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/ok_label_map.pbtxt'
+PATH_TO_LABELS = '/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/gesture_label_map.pbtxt'
 
-NUM_CLASSES = 1
+NUM_CLASSES = 2
 #PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
