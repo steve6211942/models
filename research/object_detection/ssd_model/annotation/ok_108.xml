@@ -1,7 +1,7 @@
 <annotation>
-	<folder>new_image</folder>
+	<folder>train_img</folder>
 	<filename>ok_108.jpg</filename>
-	<path>/home/giant/Desktop/image2/after/new_image/ok_108.jpg</path>
+	<path>/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/images/train_img/ok_108.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>2049</xmin>
-			<ymin>1269</ymin>
-			<xmax>2566</xmax>
-			<ymax>1945</ymax>
+			<xmin>2721</xmin>
+			<ymin>1307</ymin>
+			<xmax>2966</xmax>
+			<ymax>1638</ymax>
 		</bndbox>
 	</object>
 </annotation>

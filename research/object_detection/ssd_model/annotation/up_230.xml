@@ -1,7 +1,7 @@
 <annotation>
-	<folder>up_2</folder>
+	<folder>train_img</folder>
 	<filename>up_230.jpg</filename>
-	<path>/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/images/up_2/up_230.jpg</path>
+	<path>/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/images/train_img/up_230.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1893</xmin>
-			<ymin>1244</ymin>
-			<xmax>2342</xmax>
-			<ymax>2107</ymax>
+			<xmin>2125</xmin>
+			<ymin>1341</ymin>
+			<xmax>2418</xmax>
+			<ymax>1810</ymax>
 		</bndbox>
 	</object>
 </annotation>
