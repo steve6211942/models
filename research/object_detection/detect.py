@@ -32,14 +32,14 @@ from utils import visualization_utils as vis_util
 
 #url = "http://192.168.137.61:8080/video"
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 #cv2.namedWindow("test")
 
 # What model to download.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
-DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
+#DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = '/home/giant/Project/ObjectDetection/models/research/object_detection/train/frozen_inference_graph.pb'
@@ -47,15 +47,15 @@ PATH_TO_CKPT = '/home/giant/Project/ObjectDetection/models/research/object_detec
 # List of the strings that is used to add correct label for each box.
 PATH_TO_LABELS = '/home/giant/Project/ObjectDetection/models/research/object_detection/ssd_model/gesture_label_map.pbtxt'
 
-NUM_CLASSES = 2
+NUM_CLASSES = 3
 #PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
 #PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
 
 #NUM_CLASSES = 90
-opener = urllib.request.URLopener()
-opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
+#opener = urllib.request.URLopener()
+#opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
 tar_file = tarfile.open(MODEL_FILE)
 for file in tar_file.getmembers():
   file_name = os.path.basename(file.name)
@@ -92,8 +92,8 @@ IMAGE_SIZE = (12, 8)
 with detection_graph.as_default():
   with tf.Session(graph=detection_graph) as sess:
     while True:
-      ret, image_np = cap.read()
-
+      ret, image = cap.read()
+      image_np = cv2.flip(image, 1)
       # Definite input and output Tensors for detection_graph
       image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
       # Each box represents a part of the image where a particular object was detected.
