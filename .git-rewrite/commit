@@ -1,0 +1,8 @@
+tree 631a454d6f46a6d6f1d978f82de498dc5bc6e55f
+parent 044a5f5b1f1ebe6468a4a6eff08182ec18296ef5
+author Sergio Guadarrama <sguada@gmail.com> 1460417981 -0700
+committer Sergio Guadarrama <sguada@gmail.com> 1460417981 -0700
+
+Update ops.py
+
+Make sure range create a list, otherwise this won't create a list in Python 3.

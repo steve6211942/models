@@ -1,0 +1,3 @@
+Update ops.py
+
+Make sure range create a list, otherwise this won't create a list in Python 3.

@@ -1,9 +1,4 @@
 item {
   id: 1
-  name: 'ok'
-}
-
-item {
-  id: 2
-  name: 'up'
+  name: 'hand'
 }

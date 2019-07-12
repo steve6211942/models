@@ -15,7 +15,7 @@ from collections import defaultdict
 from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
-
+from numpy import array
 if tf.__version__ < '1.12.0':
   raise ImportError('Please upgrade your tensorflow installation to v1.4.* or later!')
 
@@ -33,6 +33,22 @@ from utils import visualization_utils as vis_util
 #url = "http://192.168.137.61:8080/video"
 
 cap = cv2.VideoCapture(1)
+panel = np.zeros([100, 700], np.uint8)
+cv2.namedWindow('panel')
+
+def nothing(x):
+        pass
+
+cv2.createTrackbar('L - h', 'panel', 0, 179, nothing)
+cv2.createTrackbar('U - h', 'panel', 179, 179, nothing)
+cv2.createTrackbar('L - s', 'panel', 0, 255, nothing)
+cv2.createTrackbar('U - s', 'panel', 255, 255, nothing)
+cv2.createTrackbar('L - v', 'panel', 0, 255, nothing)
+cv2.createTrackbar('U - v', 'panel', 255, 255, nothing)
+#cv2.createTrackbar('S ROWS', 'panel', 0, 480, nothing)
+#cv2.createTrackbar('E ROWS', 'panel', 480, 480, nothing)
+#cv2.createTrackbar('S COL', 'panel', 0, 640, nothing)
+#cv2.createTrackbar('E COL', 'panel', 640, 640, nothing)
 
 #cv2.namedWindow("test")
 
@@ -92,8 +108,30 @@ IMAGE_SIZE = (12, 8)
 with detection_graph.as_default():
   with tf.Session(graph=detection_graph) as sess:
     while True:
-      ret, image = cap.read()
-      image_np = cv2.flip(image, 1)
+      _, frame = cap.read()
+ #     s_r = cv2.getTrackbarPos('S ROWS', 'panel')
+ #     e_r = cv2.getTrackbarPos('E ROWS', 'panel')
+ #     s_c = cv2.getTrackbarPos('S COL', 'panel')
+ #     e_c = cv2.getTrackbarPos('E COL', 'panel')
+ #     roi = frame[s_r: e_r, s_c: e_c]
+      hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+      l_h = cv2.getTrackbarPos('L - h', 'panel')
+      u_h = cv2.getTrackbarPos('U - h', 'panel')
+      l_s = cv2.getTrackbarPos('L - s', 'panel')
+      u_s = cv2.getTrackbarPos('U - s', 'panel')
+      l_v = cv2.getTrackbarPos('L - v', 'panel')
+      u_v = cv2.getTrackbarPos('U - v', 'panel')
+      lower_green = np.array([l_h, l_s, l_v])
+      upper_green = np.array([u_h, u_s, u_v])
+      mask = cv2.inRange(hsv, lower_green, upper_green)
+      mask_inv = cv2.bitwise_not(mask)
+      bg = cv2.bitwise_and(frame, frame, mask=mask)
+      fg = cv2.bitwise_and(frame, frame, mask=mask_inv)
+      cv2.imshow('bg', bg)
+      cv2.imshow('fg', fg)
+      image_flip = cv2.flip(bg, 1)
+      gray = cv2.cvtColor(image_flip, cv2.COLOR_BGR2GRAY)
+      image_np = array(gray).reshape(1,1,3)
       # Definite input and output Tensors for detection_graph
       image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
       # Each box represents a part of the image where a particular object was detected.
@@ -118,8 +156,9 @@ with detection_graph.as_default():
           category_index,
           use_normalized_coordinates=True,
           line_thickness=8)
-      cv2.imshow('Image', image_np)
+      cv2.imshow('panel', image_np)
       if cv2.waitKey(25) & 0xFF == ord('q'):
           cap.release()
           cv2.destroyAllWindows()
           break
+
