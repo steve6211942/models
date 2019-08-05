@@ -33,6 +33,15 @@ from utils import visualization_utils as vis_util
 #url = "http://192.168.137.61:8080/video"
 
 cap = cv2.VideoCapture(0)
+width = cap.get(3)
+height = cap.get(4)
+width -= 15
+height -= 15
+min_x = 0
+min_y = 0
+max_x = 100
+max_y = 100
+status = 0
 #panel = np.zeros([100, 700], np.uint8)
 #cv2.namedWindow('panel')
 
@@ -131,33 +140,68 @@ with detection_graph.as_default():
  #     cv2.imshow('bg', bg)
  #     cv2.imshow('fg', fg)
       image_np = cv2.flip(frame, 1)
- #     gray = cv2.cvtColor(image_flip, cv2.COLOR_BGR2GRAY)
-      # Definite input and output Tensors for detection_graph
-      image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-      # Each box represents a part of the image where a particular object was detected.
-      detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-      # Each score represent how level of confidence for each of the objects.
-      # Score is shown on the result image, together with the class label.
-      detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
-      detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-      num_detections = detection_graph.get_tensor_by_name('num_detections:0')
-      #image_np = load_image_into_numpy_array(image_np)	
-      image_np_expanded = np.expand_dims(image_np, axis=0)
-      # Actual detection.
-      (boxes, scores, classes, num) = sess.run(
-        [detection_boxes, detection_scores, detection_classes, num_detections],
-        feed_dict={image_tensor: image_np_expanded})
-      # Visualization of the results of a detection.
-      vis_util.visualize_boxes_and_labels_on_image_array(
-          image_np,
-          np.squeeze(boxes),
-          np.squeeze(classes).astype(np.int32),
-          np.squeeze(scores),
-          category_index,
-          use_normalized_coordinates=True,
-          line_thickness=8)
-      cv2.imshow('panel', image_np)
-      if cv2.waitKey(25) & 0xFF == ord('q'):
+      cv2.rectangle(image_np, (min_x, min_y), (max_x, max_y), (0, 255, 0), 2)
+      crop_img = image_np[min_y:max_y, min_x:max_x]
+      key = cv2.waitKey(25) & 0xFF
+      if status == 0:
+            if key == ord('w'):
+                  if min_y >= 15:
+                        min_y -= 15
+                        max_y -= 15
+            elif key == ord('a'):
+                  if min_x >= 15:
+                        min_x -= 15
+                        max_x -= 15
+            elif key == ord('s'):
+                  if max_y <= height:
+                        min_y += 15
+                        max_y += 15
+            elif key == ord('d'):
+                  if max_x <= width:
+                        min_x += 15
+                        max_x += 15
+            elif key == ord('q'):
+                  if max_x <= width and max_y <= height and min_x >= 15 and min_y >= 15:
+                        min_x -= 15
+                        min_y -= 15
+                        max_x += 15
+                        max_y += 15
+            elif key == ord('e'):
+                  if max_x-min_x >= 100:
+                        min_x += 15
+                        min_y += 15
+                        max_x -= 15
+                        max_y -= 15
+            elif key == 32:
+                  status += 1;
+      elif status == 1:
+            # Definite input and output Tensors for detection_graph
+            image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+            # Each box represents a part of the image where a particular object was detected.
+            detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+            # Each score represent how level of confidence for each of the objects.
+            # Score is shown on the result image, together with the class label.
+            detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
+            detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
+            num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+            #image_np = load_image_into_numpy_array(image_np)	
+            image_np_expanded = np.expand_dims(image_np, axis=0)
+            # Actual detection.
+            (boxes, scores, classes, num) = sess.run(
+              [detection_boxes, detection_scores, detection_classes, num_detections],
+              feed_dict={image_tensor: image_np_expanded})
+            # Visualization of the results of a detection.
+            vis_util.visualize_boxes_and_labels_on_image_array(
+                image_np,
+                np.squeeze(boxes),
+                np.squeeze(classes).astype(np.int32),
+                np.squeeze(scores),
+                category_index,
+                use_normalized_coordinates=True,
+                line_thickness=8)
+      cv2.imshow('camera', image_np)
+      cv2.imshow('crop', crop_img)
+      if key == 27:
           cap.release()
           cv2.destroyAllWindows()
           break
