@@ -32,7 +32,7 @@ from utils import visualization_utils as vis_util
 
 #url = "http://192.168.137.61:8080/video"
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 width = cap.get(3)
 height = cap.get(4)
 width -= 15
@@ -139,9 +139,9 @@ with detection_graph.as_default():
  #     fg = cv2.bitwise_and(frame, frame, mask=mask_inv)
  #     cv2.imshow('bg', bg)
  #     cv2.imshow('fg', fg)
-      image_np = cv2.flip(frame, 1)
-      cv2.rectangle(image_np, (min_x, min_y), (max_x, max_y), (0, 255, 0), 2)
-      crop_img = image_np[min_y:max_y, min_x:max_x]
+      image_ori = cv2.flip(frame, 1)
+      cv2.rectangle(image_ori, (min_x, min_y), (max_x, max_y), (0, 255, 0), 2)
+      image_np = image_ori[min_y:max_y, min_x:max_x]
       key = cv2.waitKey(25) & 0xFF
       if status == 0:
             if key == ord('w'):
@@ -199,8 +199,8 @@ with detection_graph.as_default():
                 category_index,
                 use_normalized_coordinates=True,
                 line_thickness=8)
-      cv2.imshow('camera', image_np)
-      cv2.imshow('crop', crop_img)
+      cv2.imshow('camera', image_ori)
+      cv2.imshow('crop', image_np)
       if key == 27:
           cap.release()
           cv2.destroyAllWindows()
